@@ -12,8 +12,8 @@ general:
     sqlalchemy_db_uri: ???
   # The prefix to be used when triggering commands
     cmd_prefix: "/"
-  # Maximum numbers of active downloads. Set `0` to allow an infinite numbers of downloads at once.
-    active_downloads: 0
+  # Maximum numbers of active downloads.
+    active_downloads: 3
   # Disable all processors except youtube, youtube:search and radio playback. Limit playing only to YouTube videos tagged with 'Music' tag.
     music_only: false
   # An integer representing the limit of time (in seconds) for each downloaded media. Medias that last longer than the given time are ignored. Set to 0 to disable this limit.
