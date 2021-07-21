@@ -1,0 +1,73 @@
+# Telethon client configuration
+telegram:
+  # App ID from my.telegram.org
+    api_id: ???
+  # App Hash from my.telegram.org
+    api_hash: ???
+  # Bot Token from @BotFather. Optional: If left `null` the commands will be restricted only to the user running the userbot.
+    bot_token: null
+# General configuration
+general:
+  # Sqlalchemy database url: postgresql://username:password@localhost:5432/database
+    sqlalchemy_db_uri: ???
+  # The prefix to be used when triggering commands
+    cmd_prefix: "/"
+  # Maximum numbers of active downloads. Set `0` to allow an infinite numbers of downloads at once.
+    active_downloads: 0
+  # Disable all processors except youtube, youtube:search and radio playback. Limit playing only to YouTube videos tagged with 'Music' tag.
+    music_only: false
+  # An integer representing the limit of time (in seconds) for each downloaded media. Medias that last longer than the given time are ignored. Set to 0 to disable this limit.
+    max_lenght: 0
+  # If anonymous admins can use this bot or not.
+    anonymous: false
+  # Either if commands in this bot requires admin permissions or not (Ignored if bot_token is null)
+    enforce_admin: true
+  # list user ids for whom the above flag is flipped (Ignored if bot_token is null)
+    exceptions:
+      -
+  # What YoutubeDl extractors should be denied. See a list of extractors here: TODO: Add List reference
+    extractors_denylist:
+      -
+  # What YoutubeD; extractors should be allowed. See a list of extractors here: TODO: Add List reference
+    extractors_allowlist:
+      -
+# Set of options to pass to YoutubeDL
+youtubedl_opts:
+  # Username for authentication purposes.
+    username:
+  # Password for authentication purposes.
+    password:
+  # Number of seconds to sleep before each download.
+    sleep_interval: 1
+  # Do not print messages on the console.
+    quiet: false
+  # Do not print out anything for warning on the console.
+    no_warnings: false
+  # Do not stop on download errors.
+    ignore_errors: false
+  # An integer representing the user's age in years. Unsuitable medias for the given age are skipped.
+    age_limit:
+  # File name where cookies should be read from and dumped to.
+    cookiefile:
+  # Do not verify SSL certificates
+    nocheckcertificate: false
+  # Use HTTP instead of HTTPS to retrieve information. At the moment, this is only supported by YouTube.
+    prefer_insecure: false
+  # URL of the proxy to use for IP address verification. on geo-restricted sites.
+    geo_verification_proxy:
+  # Time to wait for unresponsive hosts, in seconds
+    socket_timeout: 600
+  # Download ads as well.
+    include_ads: false
+  # Prepend this string if an input url is not valid. 'auto' for elaborate guessing.
+    default_search: auto
+  # Url of the proxy server to use
+    proxy:
+  # Bypass geographic restriction via faking X-Forwarded-For HTTP header.
+    geo_bypass: false
+  # Two-letter ISO 3166-2 country code that will be used for explicit geographic restriction bypassing via faking X-Forwarded-For HTTP header
+    geo_bypass_country:
+  # IP range in CIDR notation that will be used similarly to geo_bypass_country
+    geo_bypass_ip_block:
+  # Location of the ffmpeg/avconv binary; either the path to the binary or its containing directory.
+    ffmpeg_location:

@@ -1,0 +1,10 @@
+Telethon==1.23.0
+SQLAlchemy>=1.2,<1.4
+psycopg2-binary==2.9.1
+telethon-session-sqlalchemy==0.2.16
+pytgcalls[telethon]
+omegaconf==2.1.0
+ruamel.yaml==0.17.10
+youtube-dl==2021.6.6
+ffmpeg-python==0.2.0
+kantex==0.2.0
