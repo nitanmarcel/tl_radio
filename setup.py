@@ -25,8 +25,8 @@ setuptools.setup(
     python_requires="~=3.7",
 
     classifiers=[
-        "Development Status :: 1 - Beta",
-        "License :: OSI Approved :: GNU General Public License v3.0",
+        "Development Status :: 4 - Beta",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Topic :: Communications :: Chat",
         "Framework :: AsyncIO",
         "Programming Language :: Python",
