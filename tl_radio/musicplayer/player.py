@@ -79,11 +79,11 @@ class Player:
             return queue[0]
 
     async def pause(self):
-        await self._group_call.pause_playout()
+        self._group_call.pause_playout()
         await self._trigger_event(events.EventPlaybackPaused, playlist.get())
 
     async def resume(self):
-        await self._group_call.resume_playout()
+        self._group_call.resume_playout()
         await self._trigger_event(events.EventPlaybackResumed, playlist.get())
 
     async def shuffle(self):
