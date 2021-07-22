@@ -10,7 +10,7 @@ from kantex.html import *
 from telethon import events
 from telethon.errors import RPCError
 
-from .. import CONFIG
+from .. import CONFIG, LAST_MSGS
 
 
 class CommandArgumentParser(argparse.ArgumentParser):
@@ -129,7 +129,9 @@ class CommandHandler:
         stderr = self._parser.read_stderr()
 
         if stdout or stderr:
-            return await msg.reply(str(Pre(stdout or stderr)))
+            msg = await msg.reply(str(Pre(stdout or stderr)))
+            LAST_MSGS.append(msg)
+            return
 
         try:
             if self._hasargs:
@@ -138,10 +140,12 @@ class CommandHandler:
                 await self._callback(event)
 
         except RPCError as exc:
-            await event.reply(self._format_tg_exception(exc))
+            msg = await event.reply(self._format_tg_exception(exc))
+            LAST_MSGS.append(msg)
             raise
         except Exception as exc:
-            await event.reply(self._format_exception(exc))
+            msg = await event.reply(self._format_exception(exc))
+            LAST_MSGS.append(msg)
             raise
 
     def add_argument(self, *args, **kwargs):

@@ -55,3 +55,6 @@ for _file in os.listdir("./"):
     _ext = _file.rsplit(".")[-1]
     if _ext in ["raw", "part"]:
         os.remove(_file)
+
+
+LAST_MSGS = []

@@ -6,7 +6,7 @@ from telethon import TelegramClient
 from telethon import utils
 from youtube_dl.utils import formatSeconds, ExtractorError
 
-from tl_radio import CONFIG, LOOP
+from tl_radio import CONFIG, LOOP, LAST_MSGS
 from tl_radio.musicplayer import events
 from tl_radio.musicplayer.player import Player
 from tl_radio.musicplayer.song import Song
@@ -36,8 +36,6 @@ active_chat_id = None
 musicplayer = Player(group_call)
 radio = Radio(group_call)
 
-last_msgs = [None]
-
 
 async def main():
     user_entity = await u_client.get_me()
@@ -57,7 +55,7 @@ async def main():
             res += f" {v['description']}\n"
         res += "\n\n See <code>{command} --help</code> for a detailed description for a specific command."
         msg = await event.reply(res)
-        last_msgs.append(msg)
+        LAST_MSGS.append(msg)
 
     @cleanup
     @has_permissions
@@ -70,43 +68,43 @@ async def main():
         if info["duration"] == -1:
             msg = await msg.edit(
                 f"Live streaming using {info['extractor']} provider is not supported at this moment!")
-            last_msgs.append(msg)
+            LAST_MSGS.append(msg)
             return
         if CONFIG.general.music_only:
             if not info["extractor"].lower().startswith("youtube"):
                 msg = await msg.edit("Only audios provided by YouTube are allowed!")
-                last_msgs.append(msg)
+                LAST_MSGS.append(msg)
                 return
             if "Music" not in info["categories"]:
                 msg = await msg.edit("Only YouTube queries from \"Music\" category are allowed.")
-                last_msgs.append(msg)
+                LAST_MSGS.append(msg)
                 return
         if CONFIG.general.extractors_denylist[0]:
             if info["extractor"] in CONFIG.general.extractors_denylist:
                 msg = await msg.edit(f"Queries from {info['extractor']} are not allowed.")
-                last_msgs.append(msg)
+                LAST_MSGS.append(msg)
                 return
         elif CONFIG.general.extractors_allowlist[0]:
             if info["extractor"] not in CONFIG.general.extractors_allowlist:
                 msg = await msg.edit(f"Queries from {info['extractor']} are not allowed.")
-                last_msgs.append(msg)
+                LAST_MSGS.append(msg)
                 return
         if CONFIG.general.max_lenght > 0:
             if info["duration"] == 0:
                 msg = await msg.edit("Medias with no duration data aren't allowed.")
-                last_msgs.append(msg)
+                LAST_MSGS.append(msg)
                 return
             elif info["duration"] > CONFIG.general.max_lenght:
                 msg = await msg.edit(
                     f"Medias longer than {formatSeconds(CONFIG.general.max_lenght)} (h:m:s) aren't allowed. The provided media is {formatSeconds(info['duration'])} (h:m:s) long.")
-                last_msgs.append(msg)
+                LAST_MSGS.append(msg)
                 return
         if not group_call.is_connected:
             await group_call.start(event.chat_id)
 
         sender = await event.get_sender()
         msg = await msg.edit("Processing...")
-        last_msgs.append(msg)
+        LAST_MSGS.append(msg)
         song = Song(info["id"], info["title"], info["duration"], info["ext"], f"{info['id']}.raw",
                     sender.username or sender.first_name)
         await musicplayer.queue(song, source)
@@ -187,37 +185,37 @@ async def main():
         for s in musicplayer.playlist_instance.get_queue():
             res += f"{nr}: {s.title} - requested by {s.requested_by}\n"
             nr += 1
-        if last_msgs:
-            for msg in last_msgs:
+        if LAST_MSGS:
+            for msg in LAST_MSGS:
                 try:
                     await msg.delete()
                 except Exception:
                     pass
         msg = await b_client.send_message(group_call.full_chat.id, res)
-        last_msgs.append(msg)
+        LAST_MSGS.append(msg)
 
     @musicplayer.on(events.EventPlaybackStarted)
     async def _on_play(song):
-        if last_msgs:
-            for msg in last_msgs:
+        if LAST_MSGS:
+            for msg in LAST_MSGS:
                 try:
                     await msg.delete()
                 except Exception:
                     pass
         msg = await b_client.send_message(group_call.full_chat.id,
                                           f"Now playing.. {song.title} requested by {song.requested_by}")
-        last_msgs.append(msg)
+        LAST_MSGS.append(msg)
 
     @musicplayer.on(events.EventRepeatToggled)
     async def _on_repeat(status):
-        if last_msgs:
-            for msg in last_msgs:
+        if LAST_MSGS:
+            for msg in LAST_MSGS:
                 try:
                     await msg.delete()
                 except Exception:
                     pass
         msg = await b_client.send_message(group_call.full_chat.id, f"Repeat mode is {'on' if status else 'off'}")
-        last_msgs.append(msg)
+        LAST_MSGS.append(msg)
 
     @cleanup
     @has_permissions
@@ -227,19 +225,19 @@ async def main():
         if not group_call.is_connected:
             await group_call.start(event.chat_id)
         msg = await event.reply("Processing...")
-        last_msgs.append(msg)
+        LAST_MSGS.append(msg)
         await asyncio.sleep(1)
         musicplayer.playlist_instance.clear()
         station = " ".join(args.source)
         play = await radio.play(station)
         if not play:
             msg = await msg.edit("The given URL is not a valid radio stream.")
-            last_msgs.append(msg)
+            LAST_MSGS.append(msg)
 
     @radio.on(revents.EventRadioStarted)
     async def _on_radio_start(station):
         msg = await b_client.send_message(group_call.full_chat.id, f"Now playing {station.url} radio stream.")
-        last_msgs.append(msg)
+        LAST_MSGS.append(msg)
 
     _help_handler = CommandHandler(b_client, _help, "help", incoming=bot_entity.bot, outgoing=not bot_entity.bot,
                                    func=lambda e: not e.is_private)
@@ -283,17 +281,17 @@ def has_permissions(func):
             if CONFIG.general.anonymous:
                 if not permissions.anonymous:
                     msg = await event.reply("Anonymous usage is not allowed.")
-                    last_msgs.append(msg)
+                    LAST_MSGS.append(msg)
                     return
             elif not permissions.is_admin or not permissions.manage_call:
                 if event.sender_id not in CONFIG.general.exceptions:
                     msg = await event.reply("You don't have enough rights to use this command.")
-                    last_msgs.append(msg)
+                    LAST_MSGS.append(msg)
                     return
         else:
             if event.sender_id in CONFIG.general.exceptions:
                 msg = await event.reply("You don't have enough rights to use this command.")
-                last_msgs.append(msg)
+                LAST_MSGS.append(msg)
                 return
         return await func(event, *args, **kwargs)
 
@@ -322,7 +320,7 @@ def not_busy(func):
             group_call_peer = group_call.chat_peer
             if utils.get_peer_id(peer) != utils.get_peer_id(group_call_peer):
                 msg = await event.reply("Userbot is already busy playing in another chat!")
-                last_msgs.append(msg)
+                LAST_MSGS.append(msg)
                 return await event.delete()
         return await func(event, *args, **kwargs)
 
@@ -332,8 +330,8 @@ def not_busy(func):
 def cleanup(func):
     @wraps(func)
     async def decorator(event, *args, **kwargs):
-        if last_msgs:
-            for msg in last_msgs:
+        if LAST_MSGS:
+            for msg in LAST_MSGS:
                 try:
                     await msg.delete()
                 except Exception:
