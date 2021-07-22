@@ -2,7 +2,7 @@ import asyncio
 import os
 
 import ffmpeg
-from youtube_dl import YoutubeDL
+from youtube_dl import YoutubeDL, DownloadError
 
 from tl_radio import CONFIG
 from tl_radio.musicplayer.playlist import Playlist
@@ -35,6 +35,8 @@ class Player:
         if not os.path.isfile(song.file):
             async with semaphore:
                 download = await run_in_executor(ytdl.extract_info, url)
+                if download is None:
+                    raise DownloadError(f"ERROR: Something went wrong while downloading: {url}")
                 if "entries" in download.keys():
                     download = download["entries"][0]
                 process = ffmpeg.input(f"{song.id}.{song.original_ext}").output(song.file, format="s16le",
