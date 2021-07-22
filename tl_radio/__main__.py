@@ -4,7 +4,7 @@ from functools import wraps
 from pytgcalls import GroupCallFactory
 from telethon import TelegramClient
 from telethon import utils
-from youtube_dl.utils import formatSeconds, ExtractorError
+from youtube_dl.utils import formatSeconds, ExtractorError, DownloadError
 
 from tl_radio import CONFIG, LOOP, LAST_MSGS
 from tl_radio.musicplayer import events
@@ -347,6 +347,8 @@ async def _extract_info(url):
         info = await run_in_executor(musicplayer.ytdl_instance.extract_info, url, download=False)
         if info is None:
             raise ExtractorError(f"ERROR: Failed to extract data for: {url}", expected=True)
+        if info["extractor"] == "generic":
+            raise DownloadError(f"ERROR: Unsupported URL {url}")
         if "entries" in info.keys():
             info = info["entries"][0]
         await sql_youtubedl.set_cache(url, info["title"], info["id"], info["ext"], info["extractor"],
