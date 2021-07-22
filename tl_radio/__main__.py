@@ -59,9 +59,9 @@ async def main():
         msg = await event.reply(res)
         last_msgs.append(msg)
 
+    @cleanup
     @has_permissions
     @not_busy
-    @cleanup
     async def _play(event, args):
         """Downloads audio from source and adds it to the queue. If nothing is playing, play it."""
         source = " ".join(args.source)
@@ -114,9 +114,9 @@ async def main():
         if not musicplayer.playlist_instance.now_playing:
             await musicplayer.play(song=song)
 
+    @cleanup
     @connected
     @has_permissions
-    @cleanup
     async def _stop(event):
         """Stops music/radio."""
         if musicplayer.is_on:
@@ -124,15 +124,15 @@ async def main():
         elif radio.is_active:
             await group_call.stop()
 
+    @cleanup
     @connected
     @has_permissions
-    @cleanup
     async def _skip(event):
         """Skips to the next item in queue"""
         await musicplayer.play_next()
 
-    @connected
     @cleanup
+    @connected
     async def _queue(event):
         """Returns the current queue."""
         res = ""
@@ -142,30 +142,30 @@ async def main():
             nr += 1
         await b_client.send_message(group_call.full_chat.id, res)
 
+    @cleanup
     @connected
     @has_permissions
-    @cleanup
     async def _shuffle(event):
         """Shuffles the current queue."""
         await musicplayer.shuffle()
 
+    @cleanup
     @connected
     @has_permissions
-    @cleanup
     async def _pause(event):
         """Pause the current playout."""
         await musicplayer.pause()
 
+    @cleanup
     @connected
     @has_permissions
-    @cleanup
     async def _resume(event):
         """Resumes the current playout."""
         await musicplayer.resume()
 
+    @cleanup
     @connected
     @has_permissions
-    @cleanup
     async def _repeat(event):
         """Toggles repeat on or off."""
         musicplayer.playlist_instance.switch_repeat()
@@ -218,9 +218,9 @@ async def main():
         msg = await b_client.send_message(group_call.full_chat.id, f"Repeat mode is {'on' if status else 'off'}")
         last_msgs.append(msg)
 
+    @cleanup
     @has_permissions
     @not_busy
-    @cleanup
     async def _radio(event, args):
         """Turns on radio and plays audio from a given stream url."""
         if not group_call.is_connected:
