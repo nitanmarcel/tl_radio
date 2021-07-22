@@ -65,38 +65,39 @@ async def main():
     async def _play(event, args):
         """Downloads audio from source and adds it to the queue. If nothing is playing, play it."""
         source = " ".join(args.source)
+        msg = await event.reply("Extracting info...")
         info = await _extract_info(source)
         if info["duration"] == -1:
-            msg = await event.reply(
+            msg = await msg.edit(
                 f"Live streaming using {info['extractor']} provider is not supported at this moment!")
             last_msgs.append(msg)
             return
         if CONFIG.general.music_only:
             if not info["extractor"].lower().startswith("youtube"):
-                msg = await event.reply("Only audios provided by YouTube are allowed!")
+                msg = await msg.edit("Only audios provided by YouTube are allowed!")
                 last_msgs.append(msg)
                 return
             if "Music" not in info["categories"]:
-                msg = await event.reply("Only YouTube queries from \"Music\" category are allowed.")
+                msg = await msg.edit("Only YouTube queries from \"Music\" category are allowed.")
                 last_msgs.append(msg)
                 return
         if CONFIG.general.extractors_denylist[0]:
             if info["extractor"] in CONFIG.general.extractors_denylist:
-                msg = await event.reply(f"Queries from {info['extractor']} are not allowed.")
+                msg = await msg.edit(f"Queries from {info['extractor']} are not allowed.")
                 last_msgs.append(msg)
                 return
         elif CONFIG.general.extractors_allowlist[0]:
             if info["extractor"] not in CONFIG.general.extractors_allowlist:
-                msg = await event.reply(f"Queries from {info['extractor']} are not allowed.")
+                msg = await msg.edit(f"Queries from {info['extractor']} are not allowed.")
                 last_msgs.append(msg)
                 return
         if CONFIG.general.max_lenght > 0:
             if info["duration"] == 0:
-                msg = await event.reply("Medias with no duration data aren't allowed.")
+                msg = await msg.edit("Medias with no duration data aren't allowed.")
                 last_msgs.append(msg)
                 return
             elif info["duration"] > CONFIG.general.max_lenght:
-                msg = await event.reply(
+                msg = await msg.edit(
                     f"Medias longer than {formatSeconds(CONFIG.general.max_lenght)} (h:m:s) aren't allowed. The provided media is {formatSeconds(info['duration'])} (h:m:s) long.")
                 last_msgs.append(msg)
                 return
@@ -104,7 +105,7 @@ async def main():
             await group_call.start(event.chat_id)
 
         sender = await event.get_sender()
-        msg = await event.reply("Processing...")
+        msg = await msg.edit("Processing...")
         last_msgs.append(msg)
         song = Song(info["id"], info["title"], info["duration"], info["ext"], f"{info['id']}.raw",
                     sender.username or sender.first_name)
@@ -232,7 +233,7 @@ async def main():
         station = " ".join(args.source)
         play = await radio.play(station)
         if not play:
-            msg = await event.reply("The given URL is not a valid radio stream.")
+            msg = await msg.edit("The given URL is not a valid radio stream.")
             last_msgs.append(msg)
 
     @radio.on(revents.EventRadioStarted)
