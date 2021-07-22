@@ -350,7 +350,7 @@ async def _extract_info(url):
         if "entries" in info.keys():
             info = info["entries"][0]
         await sql_youtubedl.set_cache(url, info["title"], info["id"], info["ext"], info["extractor"],
-                                      info.get("duration", 0) if not info["is_live"] else -1,
+                                      info.get("duration", 0) if not info.get("is_live", False) else -1,
                                       info.get("categories", ["General"]))
     return sql_youtubedl.get_cache(url)
 
