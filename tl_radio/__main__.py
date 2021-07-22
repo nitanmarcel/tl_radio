@@ -3,6 +3,7 @@ from functools import wraps
 
 from pytgcalls import GroupCallFactory
 from telethon import TelegramClient
+from telethon import events as tlevents
 from telethon import utils
 from youtube_dl.utils import formatSeconds, ExtractorError, DownloadError
 
@@ -64,6 +65,7 @@ async def main():
         """Downloads audio from source and adds it to the queue. If nothing is playing, play it."""
         source = " ".join(args.source)
         msg = await event.reply("Extracting info...")
+        LAST_MSGS.append(msg)
         info = await _extract_info(source)
         if info["duration"] == -1:
             msg = await msg.edit(
@@ -239,6 +241,16 @@ async def main():
         msg = await b_client.send_message(group_call.full_chat.id, f"Now playing {station.url} radio stream.")
         LAST_MSGS.append(msg)
 
+
+    async def _clean_old_messages(event):
+        for old_msg in LAST_MSGS[:-1]:
+            try:
+                await old_msg.delete()
+            except Exception:
+                pass
+            LAST_MSGS.remove(old_msg)
+
+
     _help_handler = CommandHandler(b_client, _help, "help", incoming=bot_entity.bot, outgoing=not bot_entity.bot,
                                    func=lambda e: not e.is_private)
     _play_handler = CommandHandler(b_client, _play, "play", incoming=bot_entity.bot, outgoing=not bot_entity.bot,
@@ -263,6 +275,10 @@ async def main():
     _radio_handler = CommandHandler(b_client, _radio, "radio", incoming=bot_entity.bot,
                                     outgoing=not bot_entity.bot,
                                     func=lambda e: not e.is_private)
+
+    _clean_old_messages_hanlder = u_client.add_event_handler(_clean_old_messages, tlevents.NewMessage(incoming=bot_entity.bot,
+                                                                                                      outgoing=not bot_entity.bot,
+                                                                                                      func=lambda e: not e.is_private))
 
     _play_handler.add_argument("source", help="An url or youtube search query.")
     _radio_handler.add_argument("source", help="An audio stream url..")
@@ -330,12 +346,6 @@ def not_busy(func):
 def cleanup(func):
     @wraps(func)
     async def decorator(event, *args, **kwargs):
-        if LAST_MSGS:
-            for msg in LAST_MSGS:
-                try:
-                    await msg.delete()
-                except Exception:
-                    pass
         await func(event, *args, **kwargs)
         return await event.delete()
 
