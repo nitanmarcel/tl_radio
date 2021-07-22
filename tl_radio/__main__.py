@@ -281,12 +281,18 @@ def has_permissions(func):
             permissions = await b_client.get_permissions(event.chat_id, event.sender_id)
             if CONFIG.general.anonymous:
                 if not permissions.anonymous:
+                    msg = await event.reply("Anonymous usage is not allowed.")
+                    last_msgs.append(msg)
                     return
             elif not permissions.is_admin or not permissions.manage_call:
                 if event.sender_id not in CONFIG.general.exceptions:
+                    msg = await event.reply("You don't have enough rights to use this command.")
+                    last_msgs.append(msg)
                     return
         else:
             if event.sender_id in CONFIG.general.exceptions:
+                msg = await event.reply("You don't have enough rights to use this command.")
+                last_msgs.append(msg)
                 return
         return await func(event, *args, **kwargs)
 
