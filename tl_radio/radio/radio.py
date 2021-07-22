@@ -50,6 +50,8 @@ class Radio:
 
     @staticmethod
     async def _get_station(url):
+        if not url.startswith("http"):
+            url = "https://" + url
         try:
             _open = await run_in_executor(urlopen, url, timeout=100)
             _info = _open.info()
