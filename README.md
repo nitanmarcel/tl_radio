@@ -2,8 +2,8 @@
 
 ## Documentation
 All setup and usage documentation are located on [tl_radio.nitanmarcel.com](https://tl_radio.nitanmarcel.com)
-* [Setup](tl_radio.nitanmarcel.com/setup/index.md)
-* [Usage](tl_radio.nitanmarcel.com/usage/index.md)
+* [Setup](https://tl_radio.nitanmarcel.com/setup/index.html)
+* [Usage](https://tl_radio.nitanmarcel.com/usage/index.html)
 
 ### Made with
 
