@@ -2,7 +2,7 @@ Telethon==1.23.0
 SQLAlchemy>=1.2,<1.4
 psycopg2-binary==2.9.1
 telethon-session-sqlalchemy==0.2.16
-pytgcalls[telethon]
+pytgcalls[telethon]==1.0.0
 omegaconf==2.1.0
 ruamel.yaml==0.17.10
 youtube-dl==2021.6.6
