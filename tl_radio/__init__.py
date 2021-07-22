@@ -1,7 +1,7 @@
 import argparse
 import asyncio
 import logging
-import os.path
+import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 
@@ -50,3 +50,8 @@ LOOP = asyncio.get_event_loop()
 THREAD_POOL = ThreadPoolExecutor(max_workers=None)
 
 LOGGER.info("Syncing. This might take a while.")
+
+for _file in os.listdir("./"):
+    _ext = _file.rsplit(".")[-1]
+    if _ext in ["raw", "part"]:
+        os.remove(_file)
