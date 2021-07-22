@@ -129,8 +129,8 @@ dmypy.json
 .pyre/
 
 # project __pycache__
-tl_radio/config/__pycache__
-tl_radio/musicplayer/__pycache__
-tl_radio/radio/__pycache__
-tl_radio/sql/__pycache__
-tl_radio/utils/__pycache__
+tl_radio/config/__pycache__/
+tl_radio/musicplayer/__pycache__/
+tl_radio/radio/__pycache__/
+tl_radio/sql/__pycache__/
+tl_radio/utils/__pycache__/
