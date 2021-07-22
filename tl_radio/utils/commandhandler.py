@@ -9,6 +9,7 @@ from typing import IO, List, NoReturn, Optional, Sequence, Text, Tuple
 from kantex.html import *
 from telethon import events
 from telethon.errors import RPCError
+from youtube_dl.utils import YoutubeDLError
 
 from .. import CONFIG, LAST_MSGS
 
@@ -143,6 +144,11 @@ class CommandHandler:
             msg = await event.reply(self._format_tg_exception(exc))
             LAST_MSGS.append(msg)
             raise
+
+        except YoutubeDLError as exc:
+            msg = await event.reply(self._format_youtubedl_error(exc), link_preview=False)
+            LAST_MSGS.append(msg)
+
         except Exception as exc:
             msg = await event.reply(self._format_exception(exc))
             LAST_MSGS.append(msg)
@@ -189,3 +195,8 @@ class CommandHandler:
         sec.append(text)
         sec.append("")
         return str(KanTeXDocument(sec))
+
+    @staticmethod
+    def _format_youtubedl_error(exception):
+        text = re.sub('^(\w*:)', '', str(exception))
+        return text

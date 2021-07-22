@@ -16,6 +16,7 @@ _ytdl_opts = {"format": "bestaudio/best",
               "force_noplaylist": True,
               "playlistend": 1,
               "logtostderr": False,
+              "no_color": True,
               "outtmpl": "%(id)s.%(ext)s",
               "source_address": "0.0.0.0",
               "postprocessors": [{"key": "FFmpegMetadata"}]}
