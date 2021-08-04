@@ -6,8 +6,10 @@ from pyee import AsyncIOEventEmitter
 from ._queue import Queue
 from ._stream import Stream, RadioStream
 
+
 class _RadioPlayer:
     """Radio player controller."""
+
     def __init__(self, ee, loop=None):
         self._loop = loop or asyncio.get_event_loop()
         self._ee = ee
@@ -35,6 +37,7 @@ class _RadioPlayer:
     @now_playing.setter
     def now_playing(self, value):
         self._stream = value
+
 
 class Player:
     """Stream player controller."""
@@ -66,7 +69,6 @@ class Player:
         if deque:
             if stream.id == deque.id and not self._radio_player.is_playing:
                 await self.stop()
-
 
     async def play(self):
         stream = self._queue.get()

@@ -93,5 +93,3 @@ class RadioStream(Stream):
 
     def __init__(self, id, url, title):
         super(RadioStream, self).__init__(id, url, title, None, None)
-
-

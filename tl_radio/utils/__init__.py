@@ -35,6 +35,7 @@ def build_playback_buttons(is_paused, repeat_mode):
         buttons.append(Button.inline(no_repeat, "ctrl_no_repeat"))
     return buttons
 
+
 def format_queue(queue):
     global index
     pairs = [queue[x:x + 10] for x in range(0, len(queue), 10)]

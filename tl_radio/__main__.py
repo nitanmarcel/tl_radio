@@ -42,6 +42,7 @@ audioplayer = Player(max_queue_lenght=50, loop=LOOP)
 group_call_factory = GroupCallFactory(u_client, GroupCallFactory.MTPROTO_CLIENT_TYPE.TELETHON)
 group_call = group_call_factory.get_raw_group_call(on_played_data=audioplayer.read_buffer)
 
+
 async def main():
     user_entity = await u_client.get_me()
     if not CONFIG.telegram.bot_token:
@@ -204,8 +205,8 @@ async def main():
             buttons = build_playback_buttons(audioplayer.is_paused, audioplayer.repeat_mode)
             return await b_client.send_message(group_call.full_chat.id, f"Now playing: {stream.title}", buttons=buttons)
         else:
-            return await b_client.send_message(group_call.full_chat.id, "There's nothing playing or queued at this moment.")
-
+            return await b_client.send_message(group_call.full_chat.id,
+                                               "There's nothing playing or queued at this moment.")
 
     @audioplayer.event.on("event_queue_update")
     @CommandHandler.cleanup
@@ -228,7 +229,8 @@ async def main():
     @CommandHandler.cleanup
     async def _on_stream_start(stream):
         buttons = build_playback_buttons(audioplayer.is_paused, audioplayer.repeat_mode)
-        return await b_client.send_message(group_call.full_chat.id, f"Now playing: {stream.title or stream.url}.", buttons=buttons, link_preview=False)
+        return await b_client.send_message(group_call.full_chat.id, f"Now playing: {stream.title or stream.url}.",
+                                           buttons=buttons, link_preview=False)
 
     @audioplayer.event.on("event_stream_end")
     async def _on_stream_end(stream):
@@ -336,7 +338,9 @@ def has_permissions(func):
                     await event.answer()
                     return
         return await func(event, *args, **kwargs)
+
     return decorator
+
 
 def connected(func):
     @functools.wraps(func)
@@ -358,7 +362,9 @@ def connected(func):
                 await event.answer()
             return
         return await func(event, *args, **kwargs)
+
     return decorator
+
 
 def not_busy(func):
     @functools.wraps(func)
@@ -374,7 +380,9 @@ def not_busy(func):
                     await event.answer()
                     return
         return await func(event, *args, **kwargs)
+
     return decorator
+
 
 if __name__ == "__main__":
     LOOP.run_until_complete(main())

@@ -1,6 +1,7 @@
 from collections import deque
 from random import shuffle
 
+
 class Queue:
     """Queue object used to manipulate a set of queued streams"""
 

@@ -1,11 +1,11 @@
 from typing import Dict, Union, List, NoReturn
 from urllib.request import urlopen
 
+from validators import url as is_url, ValidationFailure
 from youtube_dl.YoutubeDL import YoutubeDL
 from youtube_dl.utils import ExtractorError, UnsupportedError
 
 from ..utils.run_in_executor import run_in_executor
-from validators import url as is_url, ValidationFailure
 
 
 class YtDl:

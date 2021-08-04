@@ -22,7 +22,6 @@ class CommandHandler:
         if self._callback.__doc__:
             HELP[self._command] = {"prefix": self._prefix, "message": self._callback.__doc__}
 
-
     async def _command_handler(self, event):
         if not event.text:
             return
@@ -45,6 +44,7 @@ class CommandHandler:
         async def _help(command=None):
             if command:
                 return await event.reply(HELP[command]["message"])
+
         try:
             if "--help" in args:
                 return await _help(self._command)
@@ -56,6 +56,7 @@ class CommandHandler:
     @staticmethod
     def cleanup(func):
         global DELETION_QUEUE
+
         @functools.wraps(func)
         async def decorator(*args, **kwargs):
             name = func.__module__ + "." + func.__name__
