@@ -144,6 +144,7 @@
 <li>Postgresql.</li>
 </ul>
 <h2 id="production-setup"><a class="header" href="#production-setup">Production setup</a></h2>
+<h3 id="stable-version"><a class="header" href="#stable-version">Stable version:</a></h3>
 <ol>
 <li>Create a directory (<code>mkdir tl_radio</code>) and enter it (<code>cd tl_radio</code>).</li>
 <li>Install TL-Radio using pip (<code>pip3 install -U tl_radio</code>).</li>
@@ -151,9 +152,23 @@
 <li>Edit the newly created config.yaml file.</li>
 <li>Run TlRadio (<code>python3 -m tl_radio</code>).</li>
 </ol>
-<h3 id="upgrading"><a class="header" href="#upgrading">Upgrading</a></h3>
+<h3 id="upgrading-stable-version"><a class="header" href="#upgrading-stable-version">Upgrading stable version</a></h3>
 <ol>
 <li>Run the step 2 again.</li>
+<li>Restart TL-Radio.</li>
+</ol>
+<h3 id="preview-version"><a class="header" href="#preview-version">Preview version</a></h3>
+<ol start="0">
+<li>Preview versions are versions that contain braking changes and they shouldn't been considered usable. Once a preview version get's stable enough it will be pushed to the dev branch and later once on the main branch.</li>
+<li>Create a directory (<code>mkdir tl_radio_preview</code>) and enter it (<code>cd tl_radio_preview</code>).</li>
+<li>Install TL-Radio from preview github page using pip (<code>pip3 install -U git+https://github.com/nitanmarcel/tl_radio@preview</code>)</li>
+<li>Generate a configuration file using <code>python3 -m tl_radio --generate-config</code>.</li>
+<li>Edit the newly created config.yaml file.</li>
+<li>Run TlRadio (<code>python3 -m tl_radio</code>).</li>
+</ol>
+<h3 id="upgrading-preview-version"><a class="header" href="#upgrading-preview-version">Upgrading preview version</a></h3>
+<ol>
+<li>Run the step 3 again.</li>
 <li>Restart TL-Radio.</li>
 </ol>
 <h3 id="development-setup"><a class="header" href="#development-setup">Development setup</a></h3>
@@ -164,9 +179,9 @@
 <li>Install dependencies (<code>pip3 install -r requirements.txt</code>).</li>
 <li>Make the desired changes.</li>
 </ol>
-<h3 id="upgrading-1"><a class="header" href="#upgrading-1">Upgrading</a></h3>
+<h3 id="upgrading-development-version"><a class="header" href="#upgrading-development-version">Upgrading development version</a></h3>
 <ol>
-<li>Run the step 2 again.</li>
+<li>Run the step 1 again.</li>
 <li>Restart TL-Radio.</li>
 </ol>
 
@@ -196,20 +211,6 @@
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>

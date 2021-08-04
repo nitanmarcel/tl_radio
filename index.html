@@ -139,9 +139,7 @@
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p>Welcome to TL-Radio docs!</p>
-<p>This book contains usage for TL-Radio. 
-This book has been
-built using <a href="https://github.com/rust-lang/mdBook">mdBook</a>.</p>
+<p>This book contains usage for TL-Radio and has been built using <a href="https://github.com/rust-lang/mdBook">mdBook</a>.</p>
 
                     </main>
 
@@ -163,20 +161,6 @@ built using <a href="https://github.com/rust-lang/mdBook">mdBook</a>.</p>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
