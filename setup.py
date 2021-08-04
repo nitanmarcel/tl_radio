@@ -10,7 +10,7 @@ with open("requirements.txt") as reqs:
 
 setuptools.setup(
     name="tl_radio",
-    version="0.0.5pre1",
+    version="1.0.0rc1",
     url="https://github.com/nitanmarcel/tl_radio",
 
     author="Marcel Alexandru Nitan",
