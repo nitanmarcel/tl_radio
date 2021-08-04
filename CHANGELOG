@@ -1,0 +1,30 @@
+# CHANGELOG
+
+## v1.0.0preview
+- Reworked the entired project.
+- Implemented direct audio sharing from youtube_dl.to tgcalls though ffmpeg.
+- Added support for YouTube live and most of the live sources provided by youtube_dl.
+- Added support for playlists.
+- Added advanced queues. 
+ - You can now hold up to 50 songs without any problems.
+ - Play any song from a queue by it's index.
+ - Clear the queue at any time and start over.
+ - Improved queue shufle.
+- Improved playback controls: play, play next, play previous, repeat one song, repeat the queue once it reaches the end.
+
+- Implement a new command handler, remove 
+
+## v0.0.5:
+- Bug fixes.
+
+## v0.0.4:
+- Bug fixes.
+
+## v0.0.3:
+- Bug fixes.
+
+## v0.0.2:
+- Bug fixes.
+
+## v0.0.1:
+- Initial release.

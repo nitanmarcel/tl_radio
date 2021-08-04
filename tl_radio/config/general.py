@@ -6,7 +6,6 @@ from typing import List
 class General:
     sqlalchemy_db_uri: str
     cmd_prefix: str = "/"
-    autojoin: bool = False
     active_downloads: int = 0
     anonymous: bool = False
     enforce_admin: bool = True

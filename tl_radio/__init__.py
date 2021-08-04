@@ -7,7 +7,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 from .config import Config
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
+logging.getLogger("telethon").setLevel(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
 
 if sys.version_info[0] < 3 or sys.version_info[1] < 7:
@@ -50,11 +51,3 @@ LOOP = asyncio.get_event_loop()
 THREAD_POOL = ThreadPoolExecutor(max_workers=None)
 
 LOGGER.info("Syncing. This might take a while.")
-
-for _file in os.listdir("./"):
-    _ext = _file.rsplit(".")[-1]
-    if _ext in ["raw", "part"]:
-        os.remove(_file)
-
-
-LAST_MSGS = []

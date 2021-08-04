@@ -47,6 +47,8 @@ youtubedl_opts:
     ignore_errors: false
   # An integer representing the user's age in years. Unsuitable medias for the given age are skipped.
     age_limit:
+  # How many entries in a given playlist should be added to the queue.
+    playlistend: 5
   # File name where cookies should be read from and dumped to.
     cookiefile:
   # Do not verify SSL certificates
@@ -69,5 +71,5 @@ youtubedl_opts:
     geo_bypass_country:
   # IP range in CIDR notation that will be used similarly to geo_bypass_country
     geo_bypass_ip_block:
-  # Location of the ffmpeg/avconv binary; either the path to the binary or its containing directory.
+  # Location of the ffmpeg/avconv binary; either the path to the binary or its containing directory. (Deprecated)
     ffmpeg_location:
