@@ -134,3 +134,6 @@ tl_radio/musicplayer/__pycache__/
 tl_radio/radio/__pycache__/
 tl_radio/sql/__pycache__/
 tl_radio/utils/__pycache__/
+
+# IDE stuff
+.idea/
