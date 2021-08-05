@@ -89,5 +89,5 @@ class CommandHandler:
 
     @staticmethod
     def _format_youtubedl_error(exception):
-        text = re.sub('^(\w*:)', '', str(exception))
+        text = re.sub(r'^(\w*:)', '', str(exception))
         return text

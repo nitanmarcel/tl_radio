@@ -54,9 +54,9 @@ class Player:
 
     async def add_to_queue(self, source: Union[RadioStream, Stream], raise_event=True):
         source.event = self._ee
-        if type(source) == Stream:
+        if isinstance(source, Stream):
             self._queue.queue(source, raise_event=raise_event)
-        if type(source) == RadioStream:
+        if isinstance(source, RadioStream):
             if self.is_playing:
                 await self.stop()
             await self._radio_player.play(source)
@@ -93,7 +93,7 @@ class Player:
 
     async def play_one(self, index=0):
         stream = self._queue.get(index)
-        if stream and type(stream) == Stream:
+        if stream and isinstance(stream, Stream):
             await self.stop()
             await self.play()
 
@@ -111,7 +111,7 @@ class Player:
             stream = self._queue.get()
         else:
             stream = self._radio_player.now_playing
-        if type(stream) == RadioStream:
+        if isinstance(stream, RadioStream):
             await self._radio_player.play()
         else:
             await self.play()
@@ -125,7 +125,7 @@ class Player:
         else:
             stream = self._radio_player.now_playing
         if stream:
-            if type(stream) == RadioStream:
+            if isinstance(stream, RadioStream):
                 await self._radio_player.stop()
                 return
             stream.stop_stream(raise_event=False)
